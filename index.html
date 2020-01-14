@@ -26,5 +26,16 @@
       <img src="images/gauntlet.jpg" alt="Thanos Gauntlet">
     </div>
   </main>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(function(success) {
+          console.log(success)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+    }
+  </script>
 </body>
 </html>

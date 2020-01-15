@@ -14,7 +14,7 @@ var filesToChche = [
 
 // Service Worker Install Event (web resources caching)
 self.addEventListener("install", function(event) {
-  console.log(["[Service Worker Install]", event]);
+  //   console.log(["[Service Worker Install]", event]);
   // Wait Until Caching Install
   event.waitUntil(
     // caches = Cache storage reserved words
@@ -31,7 +31,7 @@ self.addEventListener("install", function(event) {
 });
 
 self.addEventListener("fetch", function(event) {
-  console.log("[Service Worker Fetch]", event);
+  //   console.log("[Service Worker Fetch]", event);
   // Return Fetch Event Result
   event.respondWith(
     // Return Caching
@@ -42,6 +42,26 @@ self.addEventListener("fetch", function(event) {
       })
       .catch(function(error) {
         return console.log("[Service Worker Fetch Error]", error);
+      })
+  );
+});
+
+self.addEventListener("activate", event => {
+  const newCacheList = ["pwa-offline-v2"];
+  event.waitUntil(
+    caches
+      .keys()
+      .then(cacheList =>
+        Promise.all(
+          cacheList.map(cacheName => {
+            if (newCacheList.indexOf(cacheName) === -1) {
+              return caches.delete(cacheName);
+            }
+          })
+        )
+      )
+      .catch(error => {
+        return console.log(error);
       })
   );
 });
